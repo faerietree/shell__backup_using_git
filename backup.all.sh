@@ -29,8 +29,10 @@ for d in $disks; do
 	# TODO Check if currently on branch "new" and abort if so?
 	
 	#What if modifications / new files are overridden? git checkout master
+	git tag -D master_previous
+	echo "Deleting previous master_previous: "#TODO turn label into commit hash $master_previous
 	echo "Tagging master as master_previous to remember it to be able to reset to it."
-	git tag master master_previous
+	git tag master_previous
 	
 	
 	#======= INFORMATION
@@ -51,6 +53,12 @@ for d in $disks; do
 	echo "Committing new files ..."
 	git add ./[^$]*  # TODO Test if this works properly!
 	git commit -m "Add new files."
+
+	echo "Pushing commit individually to keep transfer size low (backup often! Daily or" >> backup.all.log
+	echo "after important changes if advanced!) ..." >> backup.all.log
+	git push origin master
+
+	echo "*done* Backing up disk: "$d >> backup.all.log
 
 end
 
